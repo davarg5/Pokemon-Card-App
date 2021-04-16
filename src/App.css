@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+.HomePage {
+  background: url('https://media0.giphy.com/media/HZpCCbcWc0a3u/giphy.gif') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#checkCards {
+  margin-top: 40%;
+  margin-bottom: 40%;
+}
