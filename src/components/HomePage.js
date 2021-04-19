@@ -6,7 +6,9 @@ const HomePage = () => {
 
     return (
         <div className='HomePage'>
-            <Button id='checkCards' color="secondary" size="lg">Check Out Cards</Button>
+            <Link to='cards'>
+                <Button id='checkCards' color="secondary" size="lg">Check Out Cards</Button>
+            </Link>
         </div>
     )
 }

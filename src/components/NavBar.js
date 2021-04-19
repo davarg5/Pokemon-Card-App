@@ -24,7 +24,7 @@ const NavBar = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/">All Cards</NavLink>
+              <NavLink href="/cards">All Cards</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="https://github.com/reactstrap/reactstrap">About</NavLink>
