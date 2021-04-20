@@ -1,91 +1,83 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import '../Cards.scss'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import '../Cards.scss';
+import { Button } from 'reactstrap';
 
 const CardsPage = (props) => {
-    const { allCards, setAllCards } = props
-    const [cardDetails, setCardDetails] = useState([])
-    let cards = []
+    const { cardDetails, numCards, setNumCards } = props
 
-    const getDetails = () => {
-        let oldCards = [...allCards]
-        for(let i=0;i<oldCards.length;i++) {
-            axios.get(oldCards[i].url)
-                .then(res => {
-                    cards.push(res.data)
-                })
-        }
-        return cards
+    const loadMore = e => {
+        e.preventDefault()
+        setNumCards(numCards+5)
     }
 
-    useEffect(() => {
-        setCardDetails(getDetails())
-    }, [])
-
-    console.log(cardDetails)
+    // useEffect(() => {
+    //     setCardDetails(getDetails())
+    // // }, [])
 
     return (
         <div>
             <h2>Cards</h2>
-            {allCards.map((card, ind) => {
+            {cardDetails.map((card, ind) => {
                 return (
                     <div key={ind} id='all-cards'>
-                        <figure className="card card--normal">
+                        <figure className={`card card--${card.types[0].type.name}`}>
                             <div className="card__image-container">
-                                <img src="https://cdn.bulbagarden.net/upload/thumb/e/e2/133Eevee.png/1200px-133Eevee.png" alt="Eevee" className="card__image" />   
+                                <img src={`${card.sprites.front_default}`} alt={`${card.name}`} className="card__image" />   
                             </div>
                             
                             <figcaption className="card__caption">
-                                <h1 className="card__name">Eevee</h1>
+                                <h1 className="card__name">{card.name}</h1>
 
                                 <h3 className="card__type">
-                                normal
+                                {card.types[0].type.name}
                                 </h3>
-
+                                
                                 <table className="card__stats">
                                 <tbody><tr>
                                     <th>HP</th>
-                                    <td>55</td>
+                                    <td>{card.stats[0].base_stat}</td>
                                 </tr>
                                 <tr>
                                     <th>Attack</th>
-                                    <td>55</td>
+                                    <td>{card.stats[1].base_stat}</td>
                                 </tr>
                                 
                                 <tr>
                                     <th>Defense</th>
-                                    <td>50</td>
+                                    <td>{card.stats[2].base_stat}</td>
                                 </tr>
 
                                 <tr>
                                     <th>Special Attack</th>
-                                    <td>45</td>
+                                    <td>{card.stats[3].base_stat}</td>
                                 </tr>
                                 <tr>
                                     <th>Special Defense</th>
-                                    <td>65</td>
+                                    <td>{card.stats[4].base_stat}</td>
                                 </tr>
                                 <tr>
                                     <th>Speed</th>  
-                                    <td>55</td>
+                                    <td>{card.stats[5].base_stat}</td>
                                 </tr>
                                 </tbody></table>
                                 
                                 <div className="card__abilities">
                                 <h4 className="card__ability">
                                     <span className="card__label">Ability</span>
-                                    Run Away
+                                    {card.abilities[0].ability.name}
                                 </h4>
-                                <h4 className="card__ability">
+                                {/* <h4 className="card__ability">
                                     <span className="card__label">Hidden Ability</span>
                                     Anticipation
-                                </h4>
+                                </h4> */}
                                 </div>
                             </figcaption>
                         </figure>
                     </div>
                 )
             })}
+            <Button onClick={loadMore} outline color="primary">View more cards</Button>
         </div>
     )
 }

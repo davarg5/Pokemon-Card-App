@@ -13,14 +13,43 @@ import LoginPage from './components/LoginPage';
 function App() {
   // State
   const [allCards, setAllCards] = useState([])
+  const [cardDetails, setCardDetails] = useState([])
+  const [numCards, setNumCards] = useState(5)
+  
+
+  const getDetails = () => {
+    let cards = []
+    let oldCards = allCards
+    for(let i=0;i<oldCards.length;i++) {
+      axios.get(oldCards[i].url)
+        .then(res => {
+          cards.push(res.data)
+        })
+    }
+    console.log(cards)
+    return cards
+  }
 
   // Set Cards
   useEffect(() => {
-    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=4&offset=0`)
+    axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${numCards}&offset=0`)
       .then(res => {
         setAllCards(res.data.results)
       })
-  }, [])
+  }, [numCards])
+
+  
+
+  useEffect(() => {
+    Promise.all(
+      allCards.map(card => axios.get(card.url))
+    ).then(
+      (responses) => setCardDetails(
+        responses.map(r => r.data)
+      )
+    )
+  }, [allCards])
+
 
   return (
     <Router>
@@ -31,7 +60,7 @@ function App() {
 
         {/* Routes */}
         <Route exact path='/' component={HomePage} />
-        <Route exact path='/cards' component={() => <CardsPage allCards={allCards} setAllCards={setAllCards}/>} />
+        <Route exact path='/cards' component={() => <CardsPage cardDetails={cardDetails} numCards={numCards} setNumCards={setNumCards}/>} />
         <Route exact path='/login' component={LoginPage} />
         
       </div>
