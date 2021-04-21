@@ -9,6 +9,12 @@ import HomePage from './components/HomePage';
 import CardsPage from './components/CardsPage';
 import LoginPage from './components/LoginPage';
 
+import LogoutPage from './components/LogoutPage';
+import SignUpPage from './components/SignUpPage';
+
+// contexts
+import UserContext from './contexts/UserContext';
+
 
 function App() {
   // State
@@ -16,18 +22,10 @@ function App() {
   const [cardDetails, setCardDetails] = useState([])
   const [numCards, setNumCards] = useState(5)
   
+  const [userInfo, setUserInfo] = useState(null)
 
-  const getDetails = () => {
-    let cards = []
-    let oldCards = allCards
-    for(let i=0;i<oldCards.length;i++) {
-      axios.get(oldCards[i].url)
-        .then(res => {
-          cards.push(res.data)
-        })
-    }
-    console.log(cards)
-    return cards
+  const updateUserInfo = (newUserInfo) => {
+    setUserInfo(newUserInfo);
   }
 
   // Set Cards
@@ -53,17 +51,26 @@ function App() {
 
   return (
     <Router>
+      <UserContext.Provider value={userInfo}>
       <div className="App">
 
         {/* Nav Bar */}
-        <NavBar />
+        <NavBar user={userInfo}/>
 
         {/* Routes */}
         <Route exact path='/' component={HomePage} />
         <Route exact path='/cards' component={() => <CardsPage cardDetails={cardDetails} numCards={numCards} setNumCards={setNumCards}/>} />
-        <Route exact path='/login' component={LoginPage} />
+        
+    
+        <Route exact path="/login" 
+          render={(routerProps) => <LoginPage {...routerProps} handleLogin={updateUserInfo}/>} />
+        <Route exact path="/logout" 
+          render={() => <LogoutPage handleLogout={updateUserInfo}/>} />
+        <Route exact path="/signup" 
+          render={(routerProps) => <SignUpPage {...routerProps} />} />
         
       </div>
+      </UserContext.Provider>
     </Router>
   );
 }

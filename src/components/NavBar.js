@@ -10,7 +10,8 @@ import {
   NavLink,
 } from 'reactstrap';
 
-const NavBar = () => {
+const NavBar = (props) => {
+  const { user } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +33,17 @@ const NavBar = () => {
             <NavItem>
               <NavLink href="https://github.com/reactstrap/reactstrap">Contact Us</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="login">Login</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="signup">Sign Up</NavLink>
+            </NavItem>
+            {user &&
+              <NavItem>
+                <NavLink href="logout">Logout</NavLink>
+              </NavItem>
+            }
           </Nav>
         </Collapse>
       </Navbar>
