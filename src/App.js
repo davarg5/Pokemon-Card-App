@@ -7,8 +7,10 @@ import axios from 'axios';
 import NavBar from './components/NavBar';
 import HomePage from './components/HomePage';
 import CardsPage from './components/CardsPage';
-import LoginPage from './components/LoginPage';
+import CollectionPage from './components/CollectionPage';
+import OurTeamPage from './components/OurTeamPage';
 
+import LoginPage from './components/LoginPage';
 import LogoutPage from './components/LogoutPage';
 import SignUpPage from './components/SignUpPage';
 
@@ -20,9 +22,10 @@ function App() {
   // State
   const [allCards, setAllCards] = useState([])
   const [cardDetails, setCardDetails] = useState([])
-  const [numCards, setNumCards] = useState(5)
+  const [numCards, setNumCards] = useState(10)
   
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState(JSON.parse(localStorage.getItem('user')))
+  console.log(userInfo)
 
   const updateUserInfo = (newUserInfo) => {
     setUserInfo(newUserInfo);
@@ -50,16 +53,19 @@ function App() {
 
 
   return (
+    <UserContext.Provider value={userInfo}>
     <Router>
-      <UserContext.Provider value={userInfo}>
+      
       <div className="App">
 
         {/* Nav Bar */}
-        <NavBar user={userInfo}/>
+        <NavBar user={userInfo} setUserInfo={setUserInfo}/>
 
         {/* Routes */}
         <Route exact path='/' component={HomePage} />
-        <Route exact path='/cards' component={() => <CardsPage cardDetails={cardDetails} numCards={numCards} setNumCards={setNumCards}/>} />
+        <Route exact path='/cards' component={() => <CardsPage cardDetails={cardDetails} numCards={numCards} setNumCards={setNumCards} user={userInfo} setUser={setUserInfo}/>} />
+        <Route exact path='/collection' component={() => <CollectionPage user={userInfo} setUser={setUserInfo}/>} />
+        <Route exact path='/team' component={OurTeamPage} />
         
     
         <Route exact path="/login" 
@@ -70,8 +76,8 @@ function App() {
           render={(routerProps) => <SignUpPage {...routerProps} />} />
         
       </div>
-      </UserContext.Provider>
     </Router>
+    </UserContext.Provider>
   );
 }
 

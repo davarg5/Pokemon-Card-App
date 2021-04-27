@@ -27,7 +27,7 @@ const HomePage = () => {
 
         return (
             <div>
-                <h2>You are logged in as <span className="user">{userInfo.user.username}</span></h2>
+                <h2>Welcome, <span className="user">{userInfo.user.username}</span></h2>
                 {/* { cardElements } */}
             </div>
         )

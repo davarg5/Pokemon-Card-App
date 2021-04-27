@@ -1,4 +1,6 @@
-const BASE_URL = "http://localhost:8000/api/"
+import axios from 'axios';
+
+const BASE_URL = "http://localhost:8000/api/";
 
 function defaultGetInit(token) {
     return {
@@ -7,6 +9,27 @@ function defaultGetInit(token) {
             "Content-Type": "application/JSON",
             "Authorization": `JWT ${token}`
         }
+    }
+}
+
+function defaultPostInit(card, token) {
+    return {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/JSON",
+            "Authorization": `JWT ${token}`
+        },
+        body: JSON.stringify(card)
+    }
+}
+
+function defaultDeleteInit(token) {
+    return {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/JSON",
+            "Authorization": `JWT ${token}`
+        },
     }
 }
 
@@ -58,13 +81,30 @@ async function signUp(credentials) {
     return await tryCatchFetch(url, init)
 }
 
+async function fetchUser(userId) {
+    let res = await fetch(BASE_URL + `users/${userId}`);
+    let data = await res.json()
+    return data
+}
+
 
 async function fetchCard(cardId, token) {
     return await tryCatchFetch(BASE_URL + `cards/${cardId}/`, defaultGetInit(token))
 }
 
+async function addCard(card, token) {
+    return await tryCatchFetch(BASE_URL + `cards/`, defaultPostInit(card, token))
+}
+
+async function deleteCard(cardId, token) {
+    return await fetch(BASE_URL + `cards/${cardId}`, defaultDeleteInit(token))
+}
+
 export default {
     login,
     signUp,
-    fetchCard
+    fetchUser,
+    fetchCard,
+    addCard,
+    deleteCard
 } 

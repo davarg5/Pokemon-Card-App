@@ -19,6 +19,7 @@ const LoginPage = (props) => {
                 user: data.user
             }
             props.handleLogin(userInfo);
+            localStorage.setItem('user', JSON.stringify(userInfo))
             props.history.push('/');
         }
 

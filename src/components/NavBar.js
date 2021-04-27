@@ -11,14 +11,19 @@ import {
 } from 'reactstrap';
 
 const NavBar = (props) => {
-  const { user } = props;
+  const { user, setUserInfo } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const logout = () => {
+    localStorage.removeItem('user');
+    setUserInfo(null);
+  }
+
   return (
-    <div>
+    <div className='nav'>
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">Pokemon Card App!</NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -28,20 +33,29 @@ const NavBar = (props) => {
               <NavLink href="/cards">All Cards</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">About</NavLink>
+              <NavLink href="/team">Our Team</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="https://github.com/reactstrap/reactstrap">Contact Us</NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink href="login">Login</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="signup">Sign Up</NavLink>
-            </NavItem>
+            {!user && 
+              <NavItem>
+                <NavLink href="login">Login</NavLink>
+              </NavItem>
+            }
+            {!user &&
+              <NavItem>
+                <NavLink href="signup">Sign Up</NavLink>
+              </NavItem>
+            }
             {user &&
               <NavItem>
-                <NavLink href="logout">Logout</NavLink>
+                <NavLink href="logout" onClick={logout}>Logout</NavLink>
+              </NavItem>
+            }
+            {user &&
+              <NavItem>
+                <NavLink href="collection">Your Collection</NavLink>
               </NavItem>
             }
           </Nav>
